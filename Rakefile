@@ -1,4 +1,4 @@
-# Rakefile for         -*- ruby -*-
+# Rakefile for stream   -*- ruby -*-
 
 begin
   require 'rubygems'
@@ -18,6 +18,7 @@ else
   PKG_VERSION = "0.0.0"
 end
 
+SUMMARY = "Stream - Extended External Iterators"
 SRC_RB = FileList['lib/*.rb']
 
 # The default task is run if rake is given no explicit arguments.
@@ -49,11 +50,12 @@ end
 # Create a task to build the RDOC documentation tree.
 
 rd = Rake::RDocTask.new("rdoc") { |rdoc|
-  rdoc.rdoc_dir = 'html'
+  rdoc.rdoc_dir = 'stream'
 #  rdoc.template = 'kilmer'
 #  rdoc.template = 'css2'
-  rdoc.title    = "Stream - Extended External Iterators"
-  rdoc.options << '--line-numbers' << '--inline-source'
+  rdoc.title    = SUMMARY
+  rdoc.options << '--line-numbers' << '--inline-source' <<
+     '--main' << 'README'
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('lib/*.rb', 'doc/**/*.rdoc')
 }
@@ -79,6 +81,7 @@ else
 
     s.name = 'stream'
     s.version = PKG_VERSION
+    s.platform = Gem::Platform::RUBY
     s.summary = "Stream - Extended External Iterators"
     s.description = <<-EOF
       Module Stream defines an interface for external iterators.
@@ -95,7 +98,7 @@ else
 
     #### C code extensions.
 
-    #s.extensions << "ext/rmagic/extconf.rb"
+    #s.extensions << "nothing.rb"
 
     #### Load-time details: library and application (you will need one or both).
 
@@ -105,7 +108,11 @@ else
     #### Documentation and testing.
 
     s.has_rdoc = true
-    #s.test_suite_file = "test/rmagic-tests.rb"
+    s.extra_rdoc_files = ['README']
+    s.rdoc_options <<
+      '--title' <<  SUMMARY
+      '--main' << 'README' <<
+      '--line-numbers'
 
     #### Author and project details.
     s.author = "Horst Duchene"
@@ -115,7 +122,7 @@ else
   end
 
   Rake::GemPackageTask.new(spec) do |pkg|
-    pkg.need_zip = true
+    #pkg.need_zip = true
     pkg.need_tar = true
   end
 end
@@ -156,6 +163,12 @@ end
 
 ARCHIVEDIR = '/mnt/flash'
 
+desc "Create archives (tgz, zip, gem)"
 task :archive => [:package] do
   cp FileList["pkg/*.tgz", "pkg/*.zip", "pkg/*.gem"], ARCHIVEDIR
+end
+
+desc "Copy rdoc html to rubyforge"
+task :rdoc2rf => [:rdoc] do
+  sh "scp  -r stream monora@rubyforge.org:/var/www/gforge-projects/rgl"
 end

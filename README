@@ -24,7 +24,7 @@ exactly defined
  s.current_edge == [s.current, s.peek]
 
 If s a stream on [x1,...,xn]. Consider the edges [xi,xi+1] i=1,...,n and
-[x0,x1] and [xn,xn+1] (x0 and xn are helper elements to define the boundary
+[x0,x1] and [xn,xn+1] (x0 and xn+1 are helper elements to define the boundary
 conditions). Then if s is non empty, the following conditions must be true:
 
  s.at_beginning? <=> s.current_edge == [x0,x1]
@@ -169,6 +169,6 @@ root privileges to install.
 $Revision$
 $Date$
 
-Author:: Horst Duchene <hd.at.clr@hduchene.de>
+Author:: Horst Duchene <mailto:monora@users.sourceforge.net>
 License:: Copyright (c) 2001, 2004 Horst Duchene
 Released under the same license as Ruby

@@ -1,4 +1,4 @@
-STREAM_VERSION = "0.5"
+STREAM_VERSION = "0.5.1"
 
 ##
 # Module Stream defines an interface for an external Iterator which
